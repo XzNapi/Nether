@@ -61,22 +61,30 @@ public class IslandManager {
     }
 
     private void generateIsland(Location center) {
-        int platformSize = configManager.getPlatformSize();
-        int radius = platformSize / 2;
-        
-        Material platformMaterial = XMaterial.matchXMaterial(configManager.getPlatformMaterial())
-            .map(XMaterial::parseMaterial)
-            .orElse(Material.NETHERRACK);
-        
-        for (int x = -radius; x <= radius; x++) {
-            for (int z = -radius; z <= radius; z++) {
+        for (int x = -1; x <= 1; x++) {
+            for (int z = -1; z <= 1; z++) {
                 Block block = center.clone().add(x, 0, z).getBlock();
-                block.setType(platformMaterial);
+                block.setType(Material.GRASS_BLOCK);
             }
         }
         
-        int chestYOffset = configManager.getStarterChestYOffset();
-        Block chestBlock = center.clone().add(0, chestYOffset, 0).getBlock();
+        Block treeBase = center.clone().add(1, 1, 1).getBlock();
+        treeBase.setType(Material.OAK_LOG);
+        
+        Block leaves1 = treeBase.getRelative(0, 1, 0);
+        leaves1.setType(Material.OAK_LEAVES);
+        Block leaves2 = treeBase.getRelative(0, 2, 0);
+        leaves2.setType(Material.OAK_LEAVES);
+        Block leaves3 = treeBase.getRelative(1, 1, 0);
+        leaves3.setType(Material.OAK_LEAVES);
+        Block leaves4 = treeBase.getRelative(-1, 1, 0);
+        leaves4.setType(Material.OAK_LEAVES);
+        Block leaves5 = treeBase.getRelative(0, 1, 1);
+        leaves5.setType(Material.OAK_LEAVES);
+        Block leaves6 = treeBase.getRelative(0, 1, -1);
+        leaves6.setType(Material.OAK_LEAVES);
+        
+        Block chestBlock = center.clone().add(-1, 1, -1).getBlock();
         chestBlock.setType(Material.CHEST);
         
         if (chestBlock.getState() instanceof Chest) {

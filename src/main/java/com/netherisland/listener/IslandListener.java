@@ -22,6 +22,7 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.world.PortalCreateEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -63,45 +64,25 @@ public class IslandListener implements Listener {
     }
 
     private ItemStack getLavaFishingLoot() {
-        ConfigurationSection lootSection = plugin.getConfig().getConfigurationSection("lava-fishing.loot");
-        if (lootSection == null) return null;
+        List<Material> allMaterials = new ArrayList<>();
         
-        List<LootEntry> entries = new ArrayList<>();
-        int totalWeight = 0;
-        
-        for (String key : lootSection.getKeys(false)) {
-            ConfigurationSection entry = lootSection.getConfigurationSection(key);
-            if (entry == null) continue;
+        for (Material mat : Material.values()) {
+            if (!mat.isItem()) continue;
+            if (mat == Material.AIR) continue;
+            if (mat.name().equals("EGG")) continue;
+            if (mat.name().equals("END_PORTAL_FRAME")) continue;
             
-            String materialName = entry.getString("material");
-            int weight = entry.getInt("weight", 1);
-            int minAmount = entry.getInt("min-amount", 1);
-            int maxAmount = entry.getInt("max-amount", 1);
-            
-            entries.add(new LootEntry(materialName, weight, minAmount, maxAmount));
-            totalWeight += weight;
+            allMaterials.add(mat);
         }
         
-        if (entries.isEmpty()) return null;
+        if (allMaterials.isEmpty()) return null;
         
-        int roll = random.nextInt(totalWeight);
-        int currentWeight = 0;
+        Material randomMaterial = allMaterials.get(random.nextInt(allMaterials.size()));
         
-        for (LootEntry entry : entries) {
-            currentWeight += entry.weight;
-            if (roll < currentWeight) {
-                int amount = entry.minAmount + random.nextInt(entry.maxAmount - entry.minAmount + 1);
-                return XMaterial.matchXMaterial(entry.material)
-                    .map(XMaterial::parseItem)
-                    .map(item -> {
-                        item.setAmount(amount);
-                        return item;
-                    })
-                    .orElse(null);
-            }
-        }
+        int amount = 1 + random.nextInt(3);
         
-        return null;
+        ItemStack item = new ItemStack(randomMaterial, amount);
+        return item;
     }
 
     @EventHandler
@@ -267,6 +248,19 @@ public class IslandListener implements Listener {
         if (block.getWorld().getEnvironment() != World.Environment.NETHER) return;
         
         IslandData island = islandManager.getIslandAt(block.getLocation());
+        if (island == null) return;
+        
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPortalCreate(PortalCreateEvent event) {
+        if (event.getReason() != PortalCreateEvent.CreateReason.FIRE) return;
+        
+        Location loc = event.getWorld().getBlockAt(event.getBlocks().get(0).getLocation()).getLocation();
+        if (loc.getWorld().getEnvironment() != World.Environment.NETHER) return;
+        
+        IslandData island = islandManager.getIslandAt(loc);
         if (island == null) return;
         
         event.setCancelled(true);
