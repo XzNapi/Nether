@@ -1,0 +1,12 @@
+name: NetherIsland
+version: 1.0.0
+main: com.netherisland.NetherIsland
+api-version: 1.13
+author: YourName
+description: Skyblock survival in the Nether dimension
+
+commands:
+  island:
+    description: Main island command
+    usage: /island <create|home|delete>
+    aliases: [is]

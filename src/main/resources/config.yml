@@ -1,0 +1,98 @@
+settings:
+  island-spacing: 1000
+  island-size: 50
+  platform-material: NETHERRACK
+  platform-size: 7
+  starter-chest-y-offset: 1
+
+starter-items:
+  fishing-rod: 1
+  ice: 2
+  wheat-seeds: 1
+  wooden-hoe: 1
+  bread: 16
+
+lava-fishing:
+  enabled: true
+  min-wait-time: 5
+  max-wait-time: 30
+  loot:
+    - material: COD
+      weight: 30
+      min-amount: 1
+      max-amount: 2
+    - material: SALMON
+      weight: 25
+      min-amount: 1
+      max-amount: 2
+    - material: IRON_INGOT
+      weight: 15
+      min-amount: 1
+      max-amount: 3
+    - material: GOLD_NUGGET
+      weight: 20
+      min-amount: 2
+      max-amount: 5
+    - material: NETHERRACK
+      weight: 25
+      min-amount: 4
+      max-amount: 8
+    - material: GLOWSTONE_DUST
+      weight: 10
+      min-amount: 1
+      max-amount: 3
+    - material: QUARTZ
+      weight: 15
+      min-amount: 1
+      max-amount: 4
+
+nether-farming:
+  enabled: true
+  lava-range: 4
+  allowed-crops:
+    - WHEAT
+    - CARROTS
+    - POTATOES
+    - BEETROOTS
+    - MELON_STEM
+    - PUMPKIN_STEM
+
+mob-spawning:
+  enabled: true
+  allowed-mobs:
+    - COW
+    - SHEEP
+    - PIG
+    - CHICKEN
+    - RABBIT
+
+ore-generator:
+  enabled: true
+  ice-breaks-permanently: true
+  chances:
+    - material: COBBLESTONE
+      chance: 40
+    - material: STONE
+      chance: 25
+    - material: COAL_ORE
+      chance: 15
+    - material: IRON_ORE
+      chance: 10
+    - material: GOLD_ORE
+      chance: 5
+    - material: DIAMOND_ORE
+      chance: 2
+    - material: EMERALD_ORE
+      chance: 1
+    - material: OBSIDIAN
+      chance: 2
+
+messages:
+  prefix: "&c[NetherIsland]&r"
+  island-created: "&aIsland created! Welcome to the Nether!"
+  island-teleported: "&aTeleported to your island."
+  island-deleted: "&cYour island has been permanently deleted."
+  island-not-found: "&cYou don't have an island! Use /island create"
+  island-already-exists: "&cYou already have an island!"
+  confirm-delete: "&eAre you sure? Use /island delete confirm to delete your island permanently."
+  lava-fishing-catch: "&6You caught something from the lava!"
